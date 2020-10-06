@@ -1,0 +1,313 @@
+
+<Toolbar@MDToolbar>:
+    title: "Simple toolbar"
+    pos_hint: {'center_x': .5, 'center_y': 0.95}
+    background_palette: 'Primary'
+    background_hue: '500'
+    elevation: 10
+    md_bg_color: app.theme_cls.primary_color
+    anchor_title: 'center'
+<ListButton@OneLineListItem>:
+    theme_text_color: 'Custom'
+    text_color: 0, .3, .67, 1
+    font_style: 'Button'
+
+<CardItem>:
+    size_hint_y: None
+    height: content.height
+
+    MDCardSwipeLayerBox:
+        padding: "8dp"
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": .5}
+#            on_release: app.remove_item(root)
+
+    MDCardSwipeFrontBox:
+
+        ThreeLineListItem:
+            id: content
+            text: root.text
+            secondary_text: root.secondary_text
+            tertiary_text: root.tertiary_text
+            _no_ripple_effect: True
+<PayCardItem>:
+    size_hint_y: None
+    height: content.height
+
+    MDCardSwipeLayerBox:
+        padding: "8dp"
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": .5}
+#            on_release: app.remove_item(root)
+
+    MDCardSwipeFrontBox:
+
+        TwoLineListItem:
+            id: content
+            text: root.text
+            text_color: .2, .56, .11, 1
+            theme_text_color: 'Custom'
+            secondary_theme_text_color: 'Custom'
+            secondary_text_color: .59, .74, .62, 1
+            secondary_text: root.secondary_text
+            _no_ripple_effect: True
+
+<Container>:
+    visit_type: visit_type
+    name: name
+    address: address
+    distance: distance
+    money: money
+    pay: pay
+
+    main_lbl1: main_lbl1
+    oil_lbl: oil_lbl
+
+    money_comment: money_comment
+    pay_comment: pay_comment
+
+    main_toolbar: main_toolbar
+    visit_toolbar: visit_toolbar
+    margin_toolbar: margin_toolbar
+    oil_toolbar: oil_toolbar
+
+    screen_manager: screen_manager
+
+#    email_dialog: email_dialog
+#    email_dialog_input: email_dialog_input
+
+    main_bl: main_bl
+    card_list: card_list
+
+    Screen:
+
+        NavigationLayout:
+
+            ScreenManager:
+                id: screen_manager
+                Screen:
+                    name: 'main'
+
+                    Toolbar:
+                        id: main_toolbar
+                        left_action_items: [['menu', lambda x: nav_drawer.set_state()],['arrow-left-bold-outline', lambda x: root.buttl1()]]
+                        right_action_items: [['arrow-right-bold-outline', lambda x: root.buttr1()]]
+
+                    BoxLayout:
+                        id: main_bl
+                        orientation: 'vertical'
+                        padding: 30
+                        Widget:
+                            size_hint: 1, 0.35
+
+                        MDCard:
+                            orientation: "vertical"
+                            padding: "8dp"
+                            MDLabel:
+                                id: main_lbl1
+                                font_style: 'H6'
+                                color: [0, .3, .67, 1]
+                                size_hint: 1, 0.9
+                                text: ''
+
+                        ScrollView:
+                            do_scroll_x: False
+                            do_scroll_y: True
+                            size_hint: 1, 4
+
+                            MDList:
+                                id: card_list
+
+
+                Screen:
+                    name: 'visit'
+                    Toolbar:
+                        id: visit_toolbar
+                        left_action_items: [['arrow-left',lambda x: root.back_to_home_screen()]]
+                        title: 'Выезд'
+
+                    BoxLayout:
+                        padding: 30
+                        orientation: 'vertical'
+                        Widget:
+                            size_hint: 1, 0.3
+
+                        MDTextField:
+                            id: visit_type
+                            hint_text: 'Цель поездки'
+                        MDTextField:
+                            id: name
+                            hint_text: 'Имя клиента'
+                        MDTextField:
+                            id: address
+                            hint_text: 'Адрес'
+                        MDTextField:
+                            id: distance
+                            hint_text: 'Расстояние(км)'
+                            input_type: 'number'
+                            input_filter: 'int'
+                        Widget:
+                            size_hint: 1, 0.3
+
+                        Widget:
+
+                        MDFillRoundFlatButton:
+                            text: 'Добавить'
+                            size_hint: 1, 0.5
+                            on_release:
+                                root.set_visit()
+                                root.update()
+                Screen:
+                    name: 'margin'
+                    Toolbar:
+                        id: margin_toolbar
+                        left_action_items: [['arrow-left',lambda x: root.back_to_home_screen()]]
+                        title: 'Доход'
+
+                    BoxLayout:
+                        orientation: 'vertical'
+                        padding: 30
+                        Widget:
+
+                        MDTextField:
+                            id: money
+                            hint_text: 'Оплата(₽)'
+                            input_type: 'number'
+                            input_filter: 'int'
+                        MDTextField:
+                            id: money_comment
+                            hint_text: 'коментарий (необязятельно)'
+
+                        Widget:
+
+                        MDFillRoundFlatButton:
+                            text: 'Добавить'
+                            size_hint: 1, 0.5
+                            on_release:
+                                root.set_margin()
+                                root.update()
+
+
+                Screen:
+
+                    name: 'oil'
+                    Toolbar:
+                        id: oil_toolbar
+                        left_action_items: [['arrow-left',lambda x: root.back_to_home_screen()]]
+
+                    BoxLayout:
+                        id: bl2
+                        orientation: 'vertical'
+                        padding: 30
+
+                        Widget:
+                            size_hint: 1, 0.35
+                            on_parent: if self.parent == bl2: root.update()
+
+                        MDTextField:
+                            id: pay
+                            hint_text: '₽'
+                            input_type: 'number'
+                            input_filter: 'int'
+                        MDTextField:
+                            id: pay_comment
+                            hint_text: 'Комментарий (необязательно)'
+
+                        ScrollView:
+                            do_scroll_x: False
+                            do_scroll_y: True
+                            size_hint: 1, 3
+
+                            MDLabel:
+                                id: oil_lbl
+                                height: self.texture_size[1]
+                                valign: 'top'
+                                text_size: self.size
+                                text: ''
+                                size_hint_y: None
+                        Widget:
+                            size_hint: 1, 0.5
+                        MDFillRoundFlatButton:
+                            text: 'Добавить'
+                            size_hint: 1, 1
+                            on_release:
+                                root.set_oil()
+                                root.update()
+
+            MDNavigationDrawer:
+                id: nav_drawer
+                BoxLayout:
+                    orientation: 'vertical'
+                    MDIconButton:
+                        icon: 'close'
+                        on_release: nav_drawer.set_state()
+
+
+                    ScrollView:
+
+                        MDList:
+                            id: list
+
+                            ListButton:
+                                text: "Выезд"
+                                on_release:
+                                    screen_manager.transition.direction = 'left'
+                                    screen_manager.current = 'visit'
+                                    nav_drawer.set_state()
+                            ListButton:
+                                text: "Доход"
+                                on_release:
+                                    screen_manager.transition.direction = 'left'
+                                    screen_manager.current = 'margin'
+                                    nav_drawer.set_state()
+                            ListButton:
+                                text: 'Расход'
+                                on_release:
+                                    screen_manager.transition.direction = 'left'
+                                    screen_manager.current = 'oil'
+                                    nav_drawer.set_state()
+
+                            MDSeparator:
+                                height: '5dp'
+
+                            ListButton:
+                                text: 'Выгрузка данных'
+                                text_color: 0, 0, 0, 1
+#                                on_release: root.send_email()
+#                            MDDialog:
+#                                id: email_dialog
+#                                on_parent: if self.parent == list: list.remove_widget(self)
+#                                size_hint: (0.8, 0.4)
+#                                BoxLayout:
+#                                    orientation: 'vertical'
+#                                    padding: 15
+#                                    MDLabel:
+#                                        text: 'Введите gmail'
+#                                        color: .37, .70, .96, 1
+#                                        font_style: 'H6'
+#                                        halign: 'center'
+#                                        valign: 'center'
+#                                        height: self.texture_size[1]
+#                                        text_size: self.size
+#                                        size_hint: 1, 0.5
+#                                    MDSeparator:
+#                                        height: '5dp'
+#                                    MDTextField:
+#                                        id: email_dialog_input
+#                                        line_color_normal: app.theme_cls.primary_color
+#                                    MDLabel:
+#                                        text: 'На указанный почтовый ящик будет доставлено письмо с данными из БД'
+#                                        font_style: 'Caption'
+#                                    MDRaisedButton:
+#                                        text: 'Отправить'
+#                                        pos_hint: ({'right': 1})
+#                                        on_release:
+#                                            root.send_email()
+#                                            root.email_dialog.dismiss()
+
+
+
