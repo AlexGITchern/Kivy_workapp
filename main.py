@@ -129,7 +129,7 @@ class Container(ScreenManager):
                         self.card_list.add_widget(MDSeparator())
 
         for w in pay:
-            if w.month == Container.MONTHS[Container.MONTH]:
+            if w.month == Container.MONTHS[Container.MONTH] and int(w.date[:4]) == Container.YEAR:
                 Container.COUNT_PAY += w.pay
         self.main_lbl1.text = f'Выездов: {Container.COUNT_STR}\nДорога: {Container.COUNT_DISTANCE * 2}км;' \
                               f' {Container.COUNT_PAY}₽\nЗП: {Container.COUNT_MONEY - Container.COUNT_PAY}'
@@ -137,7 +137,7 @@ class Container(ScreenManager):
         Container.COUNT_STR = 0
         Container.COUNT_DISTANCE = 0
         Container.COUNT_PAY = 0
-        self.main_toolbar.title = Container.MONTHS[Container.MONTH]
+        self.main_toolbar.title = f'{Container.MONTHS[Container.MONTH]} {Container.YEAR}'
 
         # update oil
         for i in pay:
@@ -153,12 +153,14 @@ class Container(ScreenManager):
     def buttl1(self):
         if Container.MONTH == 0:
             Container.MONTH += 12
+            Container.YEAR -= 1
         Container.MONTH = Container.MONTH - 1
         self.update()
 
     def buttr1(self):
         if Container.MONTH == 11:
             Container.MONTH -= 12
+            Container.YEAR += 1
         Container.MONTH = Container.MONTH + 1
         self.update()
 
