@@ -3,10 +3,13 @@ from datetime import datetime
 
 from kivy.core.window import Window
 from kivy.properties import StringProperty
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.app import MDApp
 from kivymd.theming import ThemeManager
+from kivymd.uix.button import MDFlatButton
 from kivymd.uix.card import MDCardSwipe, MDSeparator
+from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import Snackbar
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
@@ -41,6 +44,35 @@ class Oil(base):
 base.metadata.create_all(engine)
 
 
+class DialogContent(BoxLayout):
+    def send_email(self):
+        if self.email_dialog_input.text:
+            oil_list = []
+            visit_list = []
+            session = Session(bind=engine)
+            visit = session.query(Visit).all()
+            oil = session.query(Oil).all()
+            for i in oil:
+                oil_list.append([i.id, i.month, i.date, i.pay, i.comment])
+            for i in visit:
+                visit_list.append([i.id, i.month, i.date, i.type, i.name, i.address, i.distance, i.money])
+
+            smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
+            smtpObj.starttls()
+            smtpObj.login('python.app159@gmail.com', 'Sasha.1794')
+            smtpObj.sendmail("python.app159@gmail.com", self.email_dialog_input.text,
+                             f'{oil_list}\n{visit_list}'.replace(':', '/..').encode('utf-8'))
+
+            Snackbar(text=f'Данные были отправленны на {self.email_dialog_input.text}').show()
+
+            self.email_dialog_input.text = ''
+
+            smtpObj.quit()
+
+        else:
+            Snackbar(text='Данные не были отправленны, введите gmail').show()
+
+
 class Container(ScreenManager):
     MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
               'November', 'December']
@@ -53,6 +85,7 @@ class Container(ScreenManager):
     COUNT_MONEY = 0
     COUNT_DISTANCE = 0
     COUNT_PAY = 0
+
 
     def set_visit(self):
         visit_type = self.visit_type.text
@@ -164,38 +197,15 @@ class Container(ScreenManager):
         Container.MONTH = Container.MONTH + 1
         self.update()
 
-    def send_email(self):
-        if self.email_dialog_input.text:
-            # self.email_spinner.active = True
-            oil_list = []
-            visit_list = []
-            session = Session(bind=engine)
-            visit = session.query(Visit).all()
-            oil = session.query(Oil).all()
-            for i in oil:
-                oil_list.append([i.id, i.month, i.date, i.pay, i.comment])
-            for i in visit:
-                visit_list.append([i.id, i.month, i.date, i.type, i.name, i.address, i.distance, i.money])
-
-            smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
-            smtpObj.starttls()
-            smtpObj.login('python.app159@gmail.com', 'Sasha.1794')
-            smtpObj.sendmail("python.app159@gmail.com", self.email_dialog_input.text,
-                             f'{oil_list}\n{visit_list}'.replace(':', '/..').encode('utf-8'))
-            Snackbar(text=f'Данные были отправленны на {self.email_dialog_input.text}').show()
-
-            smtpObj.quit()
-
-        else:
-            Snackbar(text='Данные не были отправленны, введите gmail', button_text='Ввести',
-                     button_callback=self.email_dialog.open).show()
-
     def back_to_home_screen(self):
         self.screen_manager.transition.direction = 'right'
         self.screen_manager.current = 'main'
 
-    def test_func(self):
-        self.card_list.remove_widget(self)
+    def open_email_dialog(self):
+        self.dialog = MDDialog(title="Введите gmail:", type="custom", size_hint=(0.9, 0.9),
+                               content_cls=DialogContent(), buttons=[MDFlatButton(text="CANCEL")])
+        self.dialog.buttons[0].on_release = self.dialog.dismiss
+        self.dialog.open()
 
 
 class CardItem(MDCardSwipe):

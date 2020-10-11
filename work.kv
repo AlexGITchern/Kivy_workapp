@@ -56,6 +56,33 @@
             secondary_text: root.secondary_text
             _no_ripple_effect: True
 
+<DialogContent>:
+    id: qwer
+    email_dialog_input: email_dialog_input
+
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+
+    MDTextField:
+        id: email_dialog_input
+        hint_text: "gmail"
+
+    MDFlatButton:
+        size_hint: 1, 1
+        pos_hint: {'center_y': 0.1}
+        text: 'Отправить'
+        on_release: root.send_email()
+
+
+    MDLabel:
+        text:'На указанный почтовый ящик будет доставлено письмо с данными из БД'
+        theme_text_color: 'Secondary'
+        font_style: 'Caption'
+
+
+
 <Container>:
     visit_type: visit_type
     name: name
@@ -76,9 +103,6 @@
     oil_toolbar: oil_toolbar
 
     screen_manager: screen_manager
-
-#    email_dialog: email_dialog
-#    email_dialog_input: email_dialog_input
 
     main_bl: main_bl
     card_list: card_list
@@ -277,6 +301,10 @@
                             ListButton:
                                 text: 'Выгрузка данных'
                                 text_color: 0, 0, 0, 1
+                                on_release: root.open_email_dialog()
+
+
+
 #                                on_release: root.send_email()
 #                            MDDialog:
 #                                id: email_dialog
