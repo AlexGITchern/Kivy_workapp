@@ -1,0 +1,38 @@
+#<ScreenMain>:
+#    name: 'visit'
+#    Toolbar:
+#        id: visit_toolbar
+#        left_action_items: [['arrow-left',lambda x: root.back_to_home_screen()]]
+#        title: 'Выезд'
+#
+#    BoxLayout:
+#        padding: 30
+#        orientation: 'vertical'
+#        Widget:
+#            size_hint: 1, 0.3
+#
+#        MDTextField:
+#            id: visit_type
+#            hint_text: 'Цель поездки'
+#        MDTextField:
+#            id: name
+#            hint_text: 'Имя клиента'
+#        MDTextField:
+#            id: address
+#            hint_text: 'адрес'
+#        MDTextField:
+#            id: distance
+#            hint_text: 'Расстояние(км)'
+#            input_type: 'number'
+#            input_filter: 'int'
+#        Widget:
+#            size_hint: 1, 0.3
+#
+#        Widget:
+#
+#        MDFillRoundFlatButton:
+#            text: 'Добавить'
+#            size_hint: 1, 0.5
+#            on_release:
+#                root.set_visit()
+#                root.update()

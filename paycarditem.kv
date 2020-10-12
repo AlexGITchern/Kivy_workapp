@@ -1,0 +1,22 @@
+<PayCardItem>:
+    size_hint_y: None
+    height: content.height
+
+    MDCardSwipeLayerBox:
+        padding: "8dp"
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": .5}
+
+    MDCardSwipeFrontBox:
+
+        TwoLineListItem:
+            id: content
+            text: root.text
+            text_color: .2, .56, .11, 1
+            theme_text_color: 'Custom'
+            secondary_theme_text_color: 'Custom'
+            secondary_text_color: .59, .74, .62, 1
+            secondary_text: root.secondary_text
+            _no_ripple_effect: True

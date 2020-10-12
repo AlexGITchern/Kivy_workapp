@@ -1,0 +1,19 @@
+<CardItem>:
+    size_hint_y: None
+    height: content.height
+
+    MDCardSwipeLayerBox:
+        padding: "8dp"
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": .5}
+
+    MDCardSwipeFrontBox:
+
+        ThreeLineListItem:
+            id: content
+            text: root.text
+            secondary_text: root.secondary_text
+            tertiary_text: root.tertiary_text
+            _no_ripple_effect: True

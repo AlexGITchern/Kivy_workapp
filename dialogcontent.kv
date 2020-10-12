@@ -1,0 +1,24 @@
+<DialogContent>:
+    id: qwer
+    email_dialog_input: email_dialog_input
+
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+
+    MDTextField:
+        id: email_dialog_input
+        hint_text: "gmail"
+
+    MDFlatButton:
+        size_hint: 1, 1
+        pos_hint: {'center_y': 0.1}
+        text: 'Отправить'
+        on_release: root.send_email()
+
+
+    MDLabel:
+        text:'На указанный почтовый ящик будет доставлено письмо с данными из БД'
+        theme_text_color: 'Secondary'
+        font_style: 'Caption'
